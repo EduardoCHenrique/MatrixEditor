@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Matrix Editor</title>
+    <script type="text/javascript" src="matrixEditor.js"></script>
+    <link rel="stylesheet" href="matrixEditor.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      Choose a new color
+      <input type="color" name="name" id="colorPicker"/>
+      <input type="button" name="button" value="add color" id="addColor"/>
+    </header>
+
+    <ul class="colorSwatches">
+    </ul>
+    </div>
+    <div class="inline">
+      <canvas id="matrixEditor" width="512" height="512"></canvas>
+      <br/>
+
+      <input type="button" name="name" value="export matrix" onclick="myMatrix.exportMatrix()"/>
+    </div>
+    <div class="inline">
+      <textarea name="matrixArea" id="matrixArea" class="matrix-area"></textarea>
+    </div>
+
+
+    <script type="text/javascript">
+      var myMatrix = new MatrixEditor( document.getElementById('matrixEditor'), 512, 16 );
+    </script>
+
+  </body>
+</html>

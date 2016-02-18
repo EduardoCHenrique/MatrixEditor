@@ -1,0 +1,23 @@
+.matrix-area {
+  width: 512px;
+  height: 512px;
+}
+
+.inline {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.colorSwatches {
+
+}
+
+.colorSwatches--sample {
+  display: inline-block;
+  padding: 20px;
+  background-color: lightgray;
+}
+
+.colorSwatches--sample.selected {
+  border: 1px solid gray;
+}
