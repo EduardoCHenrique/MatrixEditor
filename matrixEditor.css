@@ -35,8 +35,22 @@ ul {
   border: 1px solid gray;
 }
 
-.sample {
+.colorSample {
   width: 30px;
   height: 30px;
   display: inline-block;
 }
+
+.delete {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: url(delete-icon.png) no-repeat;
+  background-size: cover;
+
+}
+/*.sample {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+}*/

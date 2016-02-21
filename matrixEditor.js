@@ -24,17 +24,16 @@
     this.MY_Matrix  = new Matrix( this.width/chunkSize -1 );
 
     this.myColorPallet = new ColorPallet(document.getElementById("colorPicker"));
-    console.log(this.myColorPallet.element);
 
     this.chunkSize = chunkSize;
     this.matrixArea = document.getElementById('matrixArea');
 
-// Add Color
+    //Add Color
     this.element.addEventListener('click', function(ev) {
       this.paintChunk( ev, this.myColorPallet.selectedColor);
     }.bind(this));
 
-//Remove color with right mouse button
+    //Remove color with right mouse button
     this.element.addEventListener('contextmenu', function(ev) {
       ev.preventDefault();
       this.paintChunk(ev, 0);
@@ -46,7 +45,6 @@
   };
 
   MatrixEditor.prototype.paintChunk = function (e, colorNum) {
-    console.log(colorNum);
     if (colorNum) {
       var x = Math.floor(e.offsetX / this.chunkSize);
       var y =  Math.floor(e.offsetY / this.chunkSize);
@@ -89,14 +87,16 @@
 
   var ColorPallet = window.ColorPallet = function(element){
     this.element = element;
-    this.colors = ['#ccc']; // <- default color
+    this.colors = []; // <- default color
     this.currentColor = element.value;
     this.addButton = document.getElementById('addColor');
+    this.colorList = document.getElementsByClassName('colorSwatches')[0];
     this.selectedColor;
 
     element.addEventListener('change', this.setColor.bind(this));
-    this.addButton.addEventListener('click', this.addColorSample.bind(this, element.value));
+    this.addButton.addEventListener('click', this.addColorSample.bind(this));
 
+    this.addColorSample();
 
   }
 
@@ -108,19 +108,18 @@
     return this.colors[index];
   }
 
-  ColorPallet.prototype.addColorSample = function( value, event ) {
-    console.log('gato', value, event);
+  ColorPallet.prototype.addColorSample = function( event, oldColor ) {
+    //Add color into colors array
     this.colors.push(this.currentColor);
 
-    var container = document.getElementsByClassName('colorSwatches'),
-        id = this.colors.length -1 ,
-        listItem = this.createColorSwatch( id, container );
+    //create colorswatch in listItem with its values
+    var id = this.colors.length,
+        listItem = this.createColorSwatch( id, this.colorList );
 
-        container[0].appendChild(listItem);
-        // createColorSwatch( 'li', 'colorSwatches--sample', container[0], lastItem, null );
-        // sample =
-        // createColorSwatch( 'i', 'sample', listItem, 'teste', this.currentColor );
+    //Append list Item into container
+    this.colorList.appendChild(listItem);
 
+    //Add select event to colorSwatch
     listItem.addEventListener('click' , this.selectColor.bind(this));
   }
 
@@ -139,28 +138,62 @@
     this.selectedColor = elementList[0].attributes['data-id'].value;
   }
 
-// Helper
   ColorPallet.prototype.createColorSwatch = function( id, container ) {
-    console.log('id', this.colors);
+    var dataId = id - 1;
+    //Reference and hexa color inside listItem
+    var colorSampleText = document.createElement('span');
+    // colorSampleText.textContent = dataId + ": " + this.colors[dataId];
+    colorSampleText.textContent = this.colors[dataId];
+
+    //Color sample with background color
+    var colorSample = document.createElement('span');
+    colorSample.className = 'colorSample';
+    colorSample.style.backgroundColor = this.colors[dataId];
+
+    //Button to delete list item
+    var deleteButton = document.createElement('i');
+    deleteButton.className = 'delete';
+    deleteButton.addEventListener('click', this.deleteColorSwatch.bind(this));
+    //list item node
     var listItem = document.createElement('li');
     listItem.className = 'colorSwatches--sample';
-    listItem.setAttribute('data-id', id);
-    listItem.style.backgroundColor = this.colors[id];
 
-    // var textnode = document.createTextNode("Water");
-    // var swatchLabel = id + " " + this.colors[id];
-
-    var colorSample = document.createElement('i');
-    colorSample.style.backgroundColor = this.colors[id]
-    colorSample.className = 'deleteSample';
-
+    //Appending all nodes to list item
+    listItem.setAttribute('data-id', dataId);
+    listItem.appendChild(colorSampleText);
     listItem.appendChild(colorSample);
-
-
-    // listItem.value = value || false;
+    listItem.appendChild(deleteButton);
 
     return listItem;
   }
+
+  ColorPallet.prototype.deleteColorSwatch = function(e) {
+    //Prevent click in list Item
+    e.stopPropagation();
+
+    var currentItenId = e.target.parentElement.attributes['data-id'].value,
+        childElement = this.colorList;
+    //Remove Dom node
+    this.colorList.removeChild( this.colorList.children[currentItenId] );
+    //Remove color from colors array
+    this.colors.splice(currentItenId, 1);
+    //Refresh data-id
+    this.refreshSwatches();
+
+  }
+
+  ColorPallet.prototype.refreshSwatches = function(e) {
+    var that = this;
+    //transform array like in array
+    var interableArray = Array.from(this.colorList.children);
+
+    interableArray.forEach(function(color, index) {
+      that.colorList.children[index].setAttribute('data-id', index);
+    });
+  }
+
+
+
 
 
 })(window, document);
