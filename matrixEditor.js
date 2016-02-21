@@ -45,12 +45,14 @@
   };
 
   MatrixEditor.prototype.paintChunk = function (e, colorNum) {
-    if (colorNum) {
+    if (colorNum !== undefined) {
+      console.log('if', colorNum);
       var x = Math.floor(e.offsetX / this.chunkSize);
       var y =  Math.floor(e.offsetY / this.chunkSize);
       this.MY_Matrix.set(y, x, colorNum);
       this.render();
     } else {
+      console.log('else', colorNum);
       alert('please select a color');
       }
   }
