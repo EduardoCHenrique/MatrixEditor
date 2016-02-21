@@ -24,6 +24,7 @@
     this.MY_Matrix  = new Matrix( this.width/chunkSize -1 );
 
     this.myColorPallet = new ColorPallet(document.getElementById("colorPicker"));
+    console.log(this.myColorPallet.element);
 
     this.chunkSize = chunkSize;
     this.matrixArea = document.getElementById('matrixArea');
@@ -108,12 +109,17 @@
   }
 
   ColorPallet.prototype.addColorSample = function( value, event ) {
+    console.log('gato', value, event);
     this.colors.push(this.currentColor);
 
     var container = document.getElementsByClassName('colorSwatches'),
-        lastItem = this.colors.length -1 ,
-        listItem = createNode( 'li', 'colorSwatches--sample', container[0], null, lastItem),
-        sample = createNode( 'input', 'sample', listItem, 'color', 'teste', this.currentColor);
+        id = this.colors.length -1 ,
+        listItem = this.createColorSwatch( id, container );
+
+        container[0].appendChild(listItem);
+        // createColorSwatch( 'li', 'colorSwatches--sample', container[0], lastItem, null );
+        // sample =
+        // createColorSwatch( 'i', 'sample', listItem, 'teste', this.currentColor );
 
     listItem.addEventListener('click' , this.selectColor.bind(this));
   }
@@ -131,20 +137,29 @@
     elementList = document.getElementsByClassName('selected');
 
     this.selectedColor = elementList[0].attributes['data-id'].value;
-    return;
   }
 
-//Helper
-  function createNode ( el, className, container, type, dataId, value ) {
+// Helper
+  ColorPallet.prototype.createColorSwatch = function( id, container ) {
+    console.log('id', this.colors);
+    var listItem = document.createElement('li');
+    listItem.className = 'colorSwatches--sample';
+    listItem.setAttribute('data-id', id);
+    listItem.style.backgroundColor = this.colors[id];
 
-    var nodeElement = document.createElement(el);
-    nodeElement.type = type;
-    nodeElement.className = className;
-    nodeElement.value = value || false;
-    nodeElement.setAttribute('data-id', dataId);
-    container.appendChild(nodeElement);
+    // var textnode = document.createTextNode("Water");
+    // var swatchLabel = id + " " + this.colors[id];
 
-    return nodeElement;
+    var colorSample = document.createElement('i');
+    colorSample.style.backgroundColor = this.colors[id]
+    colorSample.className = 'deleteSample';
+
+    listItem.appendChild(colorSample);
+
+
+    // listItem.value = value || false;
+
+    return listItem;
   }
 
 

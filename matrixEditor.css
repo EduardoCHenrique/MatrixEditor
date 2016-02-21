@@ -1,3 +1,15 @@
+/*start normalizer*/
+body {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+/*end normalizer*/
 .matrix-area {
   width: 512px;
   height: 512px;
@@ -9,15 +21,22 @@
 }
 
 .colorSwatches {
-
+  background-color: lightgray;
+  display: inline-block;
+  padding: 12px;
 }
 
 .colorSwatches--sample {
-  display: inline-block;
-  padding: 20px;
-  background-color: lightgray;
+  width: 100%;
+  height: 50px;
 }
 
 .colorSwatches--sample.selected {
   border: 1px solid gray;
+}
+
+.sample {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
 }
