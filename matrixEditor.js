@@ -16,6 +16,21 @@
     this._matrix[firstIndex][secondIndex] = newValue;
   };
 
+  Matrix.prototype.clearChunksByID = function( id ) {
+    var that = this;
+    that._matrix.forEach( function(line, y) {
+      line.forEach(function(chunk, x) {
+        if ( that._matrix[y][x] === parseInt(id) ) {
+          console.log(y, x);
+          that._matrix[y][x] = 0;
+          console.log('that._matrix', that._matrix[y][x]);
+        }
+      });
+    });
+  }
+
+// Matrix Editor ----------------------------------------------------------------------
+
   var MatrixEditor = window.MatrixEditor = function (element, canvasSize, chunkSize) {
 
     this.width = element.width;
@@ -23,7 +38,7 @@
     this.context = element.getContext('2d');
     this.MY_Matrix  = new Matrix( this.width/chunkSize -1 );
 
-    this.myColorPallet = new ColorPallet(document.getElementById("colorPicker"));
+    this.myColorPallet = new ColorPallet(document.getElementById("colorPicker"), this.MY_Matrix, this);
 
     this.chunkSize = chunkSize;
     this.matrixArea = document.getElementById('matrixArea');
@@ -46,13 +61,11 @@
 
   MatrixEditor.prototype.paintChunk = function (e, colorNum) {
     if (colorNum !== undefined) {
-      console.log('if', colorNum);
       var x = Math.floor(e.offsetX / this.chunkSize);
       var y =  Math.floor(e.offsetY / this.chunkSize);
       this.MY_Matrix.set(y, x, colorNum);
       this.render();
     } else {
-      console.log('else', colorNum);
       alert('please select a color');
       }
   }
@@ -61,11 +74,16 @@
     this.MY_Matrix.set(x, y, value);
   };
 
+  MatrixEditor.prototype.refresh = function (id) {
+    console.log(this.MY_Matrix);
+  }
+
   MatrixEditor.prototype.render = function () {
     var that = this;
     var currentMatrix = this.MY_Matrix.get();
     currentMatrix.forEach(function( line, y ){
       line.forEach( function( collumn, x ){
+        console.log('getColor', that.myColorPallet.getColor( currentMatrix[y][x] ));
         that.context.fillStyle = that.myColorPallet.getColor( currentMatrix[y][x] );
         that.context.fillRect( x * that.chunkSize, y * that.chunkSize, that.chunkSize, that.chunkSize );
         that.context.strokeStyle = 'black';
@@ -87,7 +105,9 @@
 
 // ColorPallet ----------------------------------------------------------------------
 
-  var ColorPallet = window.ColorPallet = function(element){
+  var ColorPallet = window.ColorPallet = function(element, matrix, matrixEditor){
+    this.myMatrixEditor = matrixEditor;
+    this.myMatrix = matrix;
     this.element = element;
     this.colors = []; // <- default color
     this.currentColor = element.value;
@@ -144,6 +164,7 @@
     var dataId = id - 1;
     //Reference and hexa color inside listItem
     var colorSampleText = document.createElement('span');
+
     // colorSampleText.textContent = dataId + ": " + this.colors[dataId];
     colorSampleText.textContent = this.colors[dataId];
 
@@ -173,15 +194,17 @@
     //Prevent click in list Item
     e.stopPropagation();
 
-    var currentItenId = e.target.parentElement.attributes['data-id'].value,
+    var currentItemId = e.target.parentElement.attributes['data-id'].value,
         childElement = this.colorList;
     //Remove Dom node
-    this.colorList.removeChild( this.colorList.children[currentItenId] );
+    this.colorList.removeChild( this.colorList.children[currentItemId] );
     //Remove color from colors array
-    this.colors.splice(currentItenId, 1);
+    this.colors.splice(currentItemId, 1);
     //Refresh data-id
     this.refreshSwatches();
-
+    this.myMatrix.clearChunksByID(currentItemId);
+    this.myMatrixEditor.render();
+    console.log();
   }
 
   ColorPallet.prototype.refreshSwatches = function(e) {
@@ -194,7 +217,10 @@
     });
   }
 
+  ColorPallet.prototype.refreshMatrix = function(idToClear) {
+    console.log('idToClear', Matrix.get());
 
+  }
 
 
 
