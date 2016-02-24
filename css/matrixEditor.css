@@ -1,0 +1,151 @@
+/*start normalizer*/
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Sans-serif', 'Arial';
+  background-color: #eee;
+}
+
+* {
+  box-sizing: border-box;
+}
+input:focus {
+  outline: none;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+/*end normalizer*/
+
+.header {
+  width: 100%;
+  height: 80px;
+  text-align: center;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header--title {
+  font-weight: 100;
+}
+
+.button-add {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  background: url('../img/add-icon.png') no-repeat;
+  background-size: cover;
+  border: 0;
+  padding: 0;
+}
+
+.colorPallet {
+  background-color: lightgray;
+  width: 230px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(0px);
+}
+
+.colorPallet--header {
+  display: flex;
+  justify-content: space-between;;
+  align-items: center;
+  background-color: #BBBBBB;
+  height: 80px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.collorPallet--input {
+  display: inline-block;
+  height: 30px;
+  width: 120px;
+  color: rgb(255, 255, 255);
+  background-image: none;
+  background-color: rgb(109, 102, 204);
+  border: 0;
+  border-radius: 3px;
+  padding: 0 12px;
+}
+
+.collorPallet--add-button {
+  display: inline-block;
+}
+
+.colorPallet--sample-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.colorPallet--sample-item--color {
+  width: 50px;
+  height: 50px;
+}
+
+.colorPallet--sample-item--hexa {
+}
+
+.colorPallet--sample-swatch
+
+
+.matrix-area {
+  width: 512px;
+  height: 512px;
+}
+
+.inline {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.colorSwatches {
+  background-color: lightgray;
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.colorSwatches--sample {
+  width: 100%;
+  height: 50px;
+}
+
+.colorSwatches--sample.selected {
+  border: 1px solid gray;
+}
+
+.delete {
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  background: url('../img/delete-icon.png') no-repeat;
+  background-size: cover;
+  margin: 15px;
+  cursor: pointer;
+}
+
+.delete:before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 40px;
+  width: 1px;
+  height: 35px;
+  background-color: #BBB;
+  }

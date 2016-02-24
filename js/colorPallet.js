@@ -1,109 +1,3 @@
-(function (window, document){
-
-  var Matrix = window.Matrix = function(size) {
-    this._matrix = new Array(size);
-    for (var i = 0; i <= size; i++) {
-      this._matrix[i] = new Int8Array(size);
-    }
-    return this;
-  };
-
-  Matrix.prototype.get = function () {
-    return this._matrix;
-  };
-
-  Matrix.prototype.set = function (firstIndex, secondIndex, newValue) {
-    this._matrix[firstIndex][secondIndex] = newValue;
-  };
-
-  Matrix.prototype.clearChunksByID = function( id ) {
-    var that = this;
-    that._matrix.forEach( function(line, y) {
-      line.forEach(function(chunk, x) {
-        if ( that._matrix[y][x] === parseInt(id) ) {
-          console.log(y, x);
-          that._matrix[y][x] = 0;
-          console.log('that._matrix', that._matrix[y][x]);
-        }
-      });
-    });
-  }
-
-// Matrix Editor ----------------------------------------------------------------------
-
-  var MatrixEditor = window.MatrixEditor = function (element, canvasSize, chunkSize) {
-
-    this.width = element.width;
-    this.element = element;
-    this.context = element.getContext('2d');
-    this.MY_Matrix  = new Matrix( this.width/chunkSize -1 );
-
-    this.myColorPallet = new ColorPallet(document.getElementById("colorPicker"), this.MY_Matrix, this);
-
-    this.chunkSize = chunkSize;
-    this.matrixArea = document.getElementById('matrixArea');
-
-    //Add Color
-    this.element.addEventListener('click', function(ev) {
-      this.paintChunk( ev, this.myColorPallet.selectedColor);
-    }.bind(this));
-
-    //Remove color with right mouse button
-    this.element.addEventListener('contextmenu', function(ev) {
-      ev.preventDefault();
-      this.paintChunk(ev, 0);
-    }.bind(this));
-
-    this.render();
-
-    return this;
-  };
-
-  MatrixEditor.prototype.paintChunk = function (e, colorNum) {
-    if (colorNum !== undefined) {
-      var x = Math.floor(e.offsetX / this.chunkSize);
-      var y =  Math.floor(e.offsetY / this.chunkSize);
-      this.MY_Matrix.set(y, x, colorNum);
-      this.render();
-    } else {
-      alert('please select a color');
-      }
-  }
-
-  MatrixEditor.prototype.update = function (x, y, value) {
-    this.MY_Matrix.set(x, y, value);
-  };
-
-  MatrixEditor.prototype.refresh = function (id) {
-    console.log(this.MY_Matrix);
-  }
-
-  MatrixEditor.prototype.render = function () {
-    var that = this;
-    var currentMatrix = this.MY_Matrix.get();
-    currentMatrix.forEach(function( line, y ){
-      line.forEach( function( collumn, x ){
-        console.log('getColor', that.myColorPallet.getColor( currentMatrix[y][x] ));
-        that.context.fillStyle = that.myColorPallet.getColor( currentMatrix[y][x] );
-        that.context.fillRect( x * that.chunkSize, y * that.chunkSize, that.chunkSize, that.chunkSize );
-        that.context.strokeStyle = 'black';
-        that.context.lineWidth = 1;
-        that.context.strokeRect( x * that.chunkSize, y * that.chunkSize, that.chunkSize, that.chunkSize );
-        that.context.stroke();
-      });
-    });
-  };
-
-  MatrixEditor.prototype.exportMatrix = function () {
-    var outputArray = [];
-    this.matrixArea.value = this.MY_Matrix._matrix.map(function(arr){
-      return '[' + arr.map(function(item){
-        return item;
-      }).join(',') + ']';
-    });
-  }
-
-// ColorPallet ----------------------------------------------------------------------
 
   var ColorPallet = window.ColorPallet = function(element, matrix, matrixEditor){
     this.myMatrixEditor = matrixEditor;
@@ -170,7 +64,7 @@
 
     //Color sample with background color
     var colorSample = document.createElement('span');
-    colorSample.className = 'colorSample';
+    colorSample.className = 'colorPallet--sample-item--color';
     colorSample.style.backgroundColor = this.colors[dataId];
 
     //Button to delete list item
@@ -179,13 +73,13 @@
     deleteButton.addEventListener('click', this.deleteColorSwatch.bind(this));
     //list item node
     var listItem = document.createElement('li');
-    listItem.className = 'colorSwatches--sample';
+    listItem.className = 'colorPallet--sample-item';
 
     //Appending all nodes to list item
     listItem.setAttribute('data-id', dataId);
+    listItem.appendChild(deleteButton);
     listItem.appendChild(colorSampleText);
     listItem.appendChild(colorSample);
-    listItem.appendChild(deleteButton);
 
     return listItem;
   }
@@ -221,7 +115,3 @@
     console.log('idToClear', Matrix.get());
 
   }
-
-
-
-})(window, document);

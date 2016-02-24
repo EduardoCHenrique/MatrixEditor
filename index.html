@@ -3,27 +3,43 @@
   <head>
     <meta charset="utf-8">
     <title>Matrix Editor</title>
-    <script type="text/javascript" src="matrixEditor.js"></script>
-    <script type="text/javascript" src="jscolor.min.js"></script>
-    <link rel="stylesheet" href="matrixEditor.css" media="screen" title="no title" charset="utf-8">
+
+    <script type="text/javascript" src="js/jscolor.min.js"></script>
+    <script type="text/javascript" src="js/matrix.js"></script>
+    <script type="text/javascript" src="js/colorPallet.js"></script>
+    <script type="text/javascript" src="js/matrixEditor.js"></script>
+
+    <link rel="stylesheet" href="css/matrixEditor.css" media="screen" title="no title" charset="utf-8">
+    <!-- Google Fonts / Roboto -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,900italic,700italic,900,500italic,700,400italic,500' rel='stylesheet' type='text/css'>
   </head>
   <body>
 
-    <div>
-      Choose a new color
-      <input name="name" id="colorPicker" class="jscolor {hash:true}" value="#cccccc"/>
-      <input type="button" name="button" value="add color" id="addColor"/>
-    </div>
-    <ul class="colorSwatches"></ul>
-    </div>
+    <header class="header">
+      <h1 class="header--title">Level Editor</h1>
+    </header>
+
+    <aside class="colorPallet">
+      <div class="colorPallet--header">
+        <!-- Choose a new color -->
+        <input name="name" id="colorPicker" class="collorPallet--input jscolor {hash:true}" value="#cccccc"/>
+        <input type="button" name="button" id="addColor" class="button-add collorPallet--add-button"/>
+      </div>
+      <ul class="colorSwatches"></ul>
+    </aside>
+
+    <!-- CollorPallet -->
+
     <div class="inline">
       <canvas id="matrixEditor" width="512" height="512"></canvas>
       <br/>
       <input type="button" name="name" value="export matrix" onclick="myMatrix.exportMatrix()"/>
     </div>
+
     <div class="inline">
       <textarea name="matrixArea" id="matrixArea" class="matrix-area"></textarea>
     </div>
+
     <script type="text/javascript">
       var myMatrix = new MatrixEditor( document.getElementById('matrixEditor'), 512, 16 );
     </script>
