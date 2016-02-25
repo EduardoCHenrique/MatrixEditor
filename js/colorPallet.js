@@ -9,6 +9,10 @@
     this.colorList = document.getElementsByClassName('colorSwatches')[0];
     this.selectedColor;
 
+    this.menu = document.getElementsByClassName('colorPallet')[0];
+    this.menuButton = document.getElementsByClassName('collorPallet--menu-button')[0];
+
+    this.menuButton.addEventListener('click', this.toggleMenu.bind(this));
     element.addEventListener('change', this.setColor.bind(this));
     this.addButton.addEventListener('click', this.addColorSample.bind(this));
 
@@ -60,6 +64,7 @@
     var colorSampleText = document.createElement('span');
 
     // colorSampleText.textContent = dataId + ": " + this.colors[dataId];
+    colorSampleText.className = 'colorPallet--sample-item--hexa'
     colorSampleText.textContent = this.colors[dataId];
 
     //Color sample with background color
@@ -114,4 +119,12 @@
   ColorPallet.prototype.refreshMatrix = function(idToClear) {
     console.log('idToClear', Matrix.get());
 
+  }
+
+  ColorPallet.prototype.toggleMenu = function() {
+    this.menu.classList.contains("opened")
+    ? this.menu.classList.remove("opened")
+    : this.menu.classList.add("opened")
+
+    console.log(this.menu.classList);
   }

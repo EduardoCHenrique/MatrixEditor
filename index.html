@@ -22,24 +22,24 @@
     <aside class="colorPallet">
       <div class="colorPallet--header">
         <!-- Choose a new color -->
+        <input type="button" name="button" id="addColor" class="button--add collorPallet--add-button"/>
         <input name="name" id="colorPicker" class="collorPallet--input jscolor {hash:true}" value="#cccccc"/>
-        <input type="button" name="button" id="addColor" class="button-add collorPallet--add-button"/>
+        <button type="button" name="button" class="collorPallet--menu-button"></button>
       </div>
       <ul class="colorSwatches"></ul>
     </aside>
 
-    <!-- CollorPallet -->
+    <section class="">
+      <div class="inline">
+        <canvas id="matrixEditor" width="512" height="512"></canvas>
+        <br/>
+        <input type="button" name="name" value="export matrix" onclick="myMatrix.exportMatrix()"/>
+      </div>
 
-    <div class="inline">
-      <canvas id="matrixEditor" width="512" height="512"></canvas>
-      <br/>
-      <input type="button" name="name" value="export matrix" onclick="myMatrix.exportMatrix()"/>
-    </div>
-
-    <div class="inline">
-      <textarea name="matrixArea" id="matrixArea" class="matrix-area"></textarea>
-    </div>
-
+      <div class="inline">
+        <textarea name="matrixArea" id="matrixArea" class="matrix-area"></textarea>
+      </div>
+    </section>
     <script type="text/javascript">
       var myMatrix = new MatrixEditor( document.getElementById('matrixEditor'), 512, 16 );
     </script>
